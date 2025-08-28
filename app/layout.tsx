@@ -14,7 +14,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Blueshift Governance - SIMD-0324: Alpenglow ",
+  title: "Blueshift Governance - SIMD-0326: Alpenglow ",
   description: "Claim your vote tokens, vote to decide on the future of Solana, keep track of the SIMD governannce process.",
 }
 

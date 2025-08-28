@@ -41,9 +41,8 @@ export default function ClaimInterface() {
   const [loadingBalance, setLoadingBalance] = useState(false)
   const [checkingClaimStatus, setCheckingClaimStatus] = useState(false)
   const [voting, setVoting] = useState(false)
-  const [yesVoteAmount, setYesVoteAmount] = useState("")
-  const [noVoteAmount, setNoVoteAmount] = useState("")
-  const [abstainVoteAmount, setAbstainVoteAmount] = useState("")
+  const [selectedVoteOption, setSelectedVoteOption] = useState<'yes' | 'no' | 'abstain'>('yes')
+  const [voteAmount, setVoteAmount] = useState("")
 
   // Load merkle tree data
   useEffect(() => {
@@ -188,6 +187,8 @@ export default function ClaimInterface() {
       )
       
       setHasClaimed(true)
+      // Add small delay to ensure blockchain state is updated
+      await new Promise(resolve => setTimeout(resolve, 1000))
       await fetchUserTokenBalance()
     } catch (err: any) {
       toast.error(err.message || "Failed to claim", { id: toastId })
@@ -199,76 +200,88 @@ export default function ClaimInterface() {
   const handleVote = useCallback(async () => {
     if (!publicKey) return
     
-    const yesAmount = parseFloat(yesVoteAmount || '0')
-    const noAmount = parseFloat(noVoteAmount || '0')
-    const abstainAmount = parseFloat(abstainVoteAmount || '0')
-    const totalAmount = yesAmount + noAmount + abstainAmount
+    const amount = parseFloat(voteAmount || '0')
     
-    if (totalAmount <= 0) {
-      toast.error("Enter at least one vote amount")
+    if (amount <= 0) {
+      toast.error("Enter a vote amount")
       return
     }
     
-    const totalAmountBN = BigInt(Math.floor(totalAmount * 1_000_000_000))
+    const amountBN = BigInt(Math.floor(amount * 1_000_000_000))
     
-    if (totalAmountBN > userTokenBalance) {
+    if (amountBN > userTokenBalance) {
       toast.error("Insufficient balance")
       return
     }
     
     setVoting(true)
     
-    const voteAddresses = {
+    // These are the vote account addresses
+    const voteAccounts = {
       yes: new PublicKey("YESsimd326111111111111111111111111111111111"),
       no: new PublicKey("nosimd3261111111111111111111111111111111111"), 
       abstain: new PublicKey("ABSTA1Nsimd32611111111111111111111111111111")
     }
     
-    const votes = [
-      { type: 'YES', amount: yesAmount, address: voteAddresses.yes },
-      { type: 'NO', amount: noAmount, address: voteAddresses.no },
-      { type: 'ABSTAIN', amount: abstainAmount, address: voteAddresses.abstain }
-    ].filter(vote => vote.amount > 0)
+    const voteAccount = voteAccounts[selectedVoteOption]
+    const voteType = selectedVoteOption.toUpperCase()
     
-    const toastId = toast.loading(`Casting ${votes.length > 1 ? 'multiple' : votes[0].type} vote${votes.length > 1 ? 's' : ''}...`)
+    const toastId = toast.loading(`Casting ${voteType} vote...`)
     
     try {
+      console.log("Vote details:", { 
+        selectedVoteOption, 
+        voteAccount: voteAccount.toString(), 
+        amount, 
+        amountBN: amountBN.toString(),
+        userTokenBalance: userTokenBalance.toString()
+      })
+      
       const userAta = await getAssociatedTokenAddress(TOKEN_MINT, publicKey, false, TOKEN_PROGRAM_ID)
       const transaction = new Transaction()
       
-      for (const vote of votes) {
-        const voteAta = await getAssociatedTokenAddress(TOKEN_MINT, vote.address, false, TOKEN_PROGRAM_ID)
-        const amountBN = BigInt(Math.floor(vote.amount * 1_000_000_000))
-        
-        const voteAtaInfo = await connection.getAccountInfo(voteAta)
-        if (!voteAtaInfo) {
-          const createAtaIx = createAssociatedTokenAccountInstruction(
-            publicKey,
-            voteAta,
-            vote.address,
-            TOKEN_MINT,
-            TOKEN_PROGRAM_ID
-          )
-          transaction.add(createAtaIx)
-        }
-        
-        const transferIx = createTransferInstruction(
-          userAta,
-          voteAta,
+      // Get the ATA for the vote account (allow owner off curve)
+      const voteAta = await getAssociatedTokenAddress(TOKEN_MINT, voteAccount, true, TOKEN_PROGRAM_ID)
+      
+      console.log("ATAs:", {
+        userAta: userAta.toString(),
+        voteAta: voteAta.toString()
+      })
+      
+      // Check if the vote ATA exists, create if needed
+      const voteAtaInfo = await connection.getAccountInfo(voteAta)
+      if (!voteAtaInfo) {
+        const createAtaIx = createAssociatedTokenAccountInstruction(
           publicKey,
-          amountBN,
-          [],
+          voteAta,
+          voteAccount,
+          TOKEN_MINT,
           TOKEN_PROGRAM_ID
         )
-        transaction.add(transferIx)
+        transaction.add(createAtaIx)
       }
       
+      // Transfer tokens to the vote ATA
+      const transferIx = createTransferInstruction(
+        userAta,
+        voteAta,
+        publicKey,
+        amountBN,
+        [],
+        TOKEN_PROGRAM_ID
+      )
+      transaction.add(transferIx)
+      
       const signature = await sendTransaction(transaction, connection)
-      await connection.confirmTransaction(signature, 'confirmed')
+      await connection.confirmTransaction({
+        signature,
+        blockhash: (await connection.getLatestBlockhash()).blockhash,
+        lastValidBlockHeight: (await connection.getLatestBlockhash()).lastValidBlockHeight,
+      }, 'confirmed')
       
       toast.success(
         <div>
-          <span className="font-semibold">Vote{votes.length > 1 ? 's' : ''} cast!</span>
+          <span className="font-semibold">{voteType} vote cast!</span>
           <a 
             href={`https://solscan.io/tx/${signature}`}
             target="_blank"
@@ -281,17 +294,17 @@ export default function ClaimInterface() {
         { id: toastId, duration: 8000 }
       )
       
-      setYesVoteAmount("")
-      setNoVoteAmount("")
-      setAbstainVoteAmount("")
+      setVoteAmount("")
       await fetchUserTokenBalance()
       
     } catch (error: any) {
-      toast.error(error.message || "Vote failed", { id: toastId })
+      console.error("Vote error:", error)
+      const errorMessage = error.message || "Vote failed"
+      toast.error(`Vote failed: ${errorMessage}`, { id: toastId })
     } finally {
       setVoting(false)
     }
-  }, [publicKey, yesVoteAmount, noVoteAmount, abstainVoteAmount, userTokenBalance, connection, sendTransaction, fetchUserTokenBalance])
+  }, [publicKey, selectedVoteOption, voteAmount, userTokenBalance, connection, sendTransaction, fetchUserTokenBalance])
 
   const formatAmount = (amount: bigint): string => {
     const divisor = BigInt(1_000_000_000)
@@ -780,80 +793,103 @@ export default function ClaimInterface() {
             </div>
 
             {/* Voting Interface */}
-            {userTokenBalance > 0 && (
-              <div className="glass-card p-6">
-                <h2 className="text-lg font-semibold text-white mb-4 font-mono uppercase tracking-wider">Cast Your Vote</h2>
+            <div className="glass-card p-6">
+              <h2 className="text-lg font-semibold text-white mb-4 font-mono uppercase tracking-wider">Cast Your Vote</h2>
                 
                 <div className="space-y-4">
-                  {/* YES Vote */}
+                  {/* Vote Option Switcher */}
                   <div className="space-y-2">
-                    <label className="text-blueshift-cyan font-mono text-sm uppercase tracking-wider">YES</label>
-                    <input
-                      type="number"
-                      step="0.001"
-                      value={yesVoteAmount}
-                      onChange={(e) => setYesVoteAmount(e.target.value)}
-                      placeholder="Amount for YES"
-                      className="input-dark"
-                    />
-                  </div>
-
-                  {/* NO Vote */}
-                  <div className="space-y-2">
-                    <label className="text-blueshift-blue font-mono text-sm uppercase tracking-wider">NO</label>
-                    <input
-                      type="number"
-                      step="0.001"
-                      value={noVoteAmount}
-                      onChange={(e) => setNoVoteAmount(e.target.value)}
-                      placeholder="Amount for NO"
-                      className="input-dark"
-                    />
-                  </div>
-
-                  {/* ABSTAIN Vote */}
-                  <div className="space-y-2">
-                    <label className="text-blueshift-gray-400 font-mono text-sm uppercase tracking-wider">ABSTAIN</label>
-                    <input
-                      type="number"
-                      step="0.001"
-                      value={abstainVoteAmount}
-                      onChange={(e) => setAbstainVoteAmount(e.target.value)}
-                      placeholder="Amount for ABSTAIN"
-                      className="input-dark"
-                    />
-                  </div>
-
-                  {/* Total Summary */}
-                  <div className="pt-4 border-t border-blueshift-gray-800">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-blueshift-gray-400 font-mono text-sm uppercase">Total Voting</span>
-                      <span className="text-white font-mono text-sm">
-                        {((parseFloat(yesVoteAmount || '0') + parseFloat(noVoteAmount || '0') + parseFloat(abstainVoteAmount || '0'))).toFixed(3)}
-                      </span>
+                    <label className="text-white font-mono text-sm uppercase tracking-wider">Vote Option</label>
+                    <div className="flex bg-blueshift-gray-800 rounded-lg p-1">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedVoteOption('yes')}
+                        className={`flex-1 py-2 px-4 rounded-md text-sm font-mono font-semibold transition-all ${
+                          selectedVoteOption === 'yes'
+                            ? 'bg-blueshift-cyan text-blueshift-dark'
+                            : 'text-blueshift-cyan hover:bg-blueshift-gray-700'
+                        }`}
+                      >
+                        YES
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedVoteOption('no')}
+                        className={`flex-1 py-2 px-4 rounded-md text-sm font-mono font-semibold transition-all ${
+                          selectedVoteOption === 'no'
+                            ? 'bg-blueshift-blue text-white'
+                            : 'text-blueshift-blue hover:bg-blueshift-gray-700'
+                        }`}
+                      >
+                        NO
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedVoteOption('abstain')}
+                        className={`flex-1 py-2 px-4 rounded-md text-sm font-mono font-semibold transition-all ${
+                          selectedVoteOption === 'abstain'
+                            ? 'bg-blueshift-gray-400 text-blueshift-dark'
+                            : 'text-blueshift-gray-400 hover:bg-blueshift-gray-700'
+                        }`}
+                      >
+                        ABSTAIN
+                      </button>
                     </div>
+                  </div>
+
+                  {/* Vote Amount */}
+                  <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-blueshift-gray-400 font-mono text-sm uppercase">Available Balance</span>
-                      <span className="text-blueshift-cyan font-mono text-sm">
-                        {formatAmount(userTokenBalance)}
-                      </span>
+                      <label className={`font-mono text-sm uppercase tracking-wider ${
+                        selectedVoteOption === 'yes' ? 'text-blueshift-cyan' :
+                        selectedVoteOption === 'no' ? 'text-blueshift-blue' :
+                        'text-blueshift-gray-400'
+                      }`}>
+                        Amount for {selectedVoteOption.toUpperCase()}
+                      </label>
+                      <div>
+                        <span className="text-blueshift-gray-400 font-mono text-xs uppercase tracking-wider">Available: </span>
+                        <span className="text-blueshift-cyan font-mono text-xs">
+                          {formatAmount(userTokenBalance)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="number"
+                        step="0.001"
+                        value={voteAmount}
+                        onChange={(e) => setVoteAmount(e.target.value)}
+                        placeholder={`Amount for ${selectedVoteOption.toUpperCase()}`}
+                        className="input-dark flex-1 font-mono"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setVoteAmount((Number(userTokenBalance) / 1_000_000_000).toString())}
+                        className={`px-3 py-2 bg-blueshift-gray-800 hover:bg-blueshift-gray-700 text-sm font-mono rounded-lg border border-blueshift-gray-600 transition-colors ${
+                          selectedVoteOption === 'yes' ? 'text-blueshift-cyan' :
+                          selectedVoteOption === 'no' ? 'text-blueshift-blue' :
+                          'text-blueshift-gray-400'
+                        }`}
+                      >
+                        MAX
+                      </button>
                     </div>
                   </div>
                   
                   <button
                     onClick={handleVote}
-                    disabled={voting || (parseFloat(yesVoteAmount || '0') + parseFloat(noVoteAmount || '0') + parseFloat(abstainVoteAmount || '0')) <= 0}
+                    disabled={voting || userTokenBalance === BigInt(0) || parseFloat(voteAmount || '0') <= 0}
                     className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {voting ? "Casting Vote..." : "Submit Vote"}
+                    {voting ? "Casting Vote..." : userTokenBalance === BigInt(0) ? "No Tokens Available" : `Submit ${selectedVoteOption.toUpperCase()} Vote`}
                   </button>
                   
                   <p className="text-xs text-blueshift-gray-500 text-center">
-                    Votes are permanent and transfer tokens to vote addresses
+                    {userTokenBalance === BigInt(0) ? "You need tokens to vote. Claim your allocation above if eligible." : "Votes are permanent and transfer tokens to vote addresses"}
                   </p>
                 </div>
               </div>
-            )}
           </div>
         )}
       </div>
