@@ -25,6 +25,7 @@ import {
   UserVotingPower 
 } from "@/lib/vote-results"
 import { TOKEN_MINT } from "@/lib/constants"
+import WalletEligibilityChecker from "@/components/WalletEligibilityChecker"
 
 export default function ClaimInterface() {
   const { publicKey, sendTransaction } = useWallet()
@@ -513,7 +514,9 @@ export default function ClaimInterface() {
           </div>
         </div>
       </header>
-
+      <div className="max-w-7xl mx-auto mb-6">
+        <WalletEligibilityChecker merkleData={merkleData} loading={loading} />
+      </div>
       {/* Voting Status */}
       <div className="max-w-7xl mx-auto mb-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
