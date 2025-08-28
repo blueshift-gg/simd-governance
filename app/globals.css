@@ -6,42 +6,78 @@
   html {
     @apply scroll-smooth;
   }
-  
+
   body {
     @apply bg-blueshift-darker text-blueshift-gray-300 antialiased;
-    background-image: 
-      radial-gradient(ellipse at top left, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(105, 162, 241, 0.05) 0%, transparent 50%);
+    background-image: radial-gradient(
+        ellipse at top left,
+        rgba(0, 255, 255, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        rgba(105, 162, 241, 0.05) 0%,
+        transparent 50%
+      );
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-blueshift-gray-900/40 backdrop-blur-md border border-blueshift-gray-800/50 rounded-2xl;
+    @apply bg-blueshift-gray-900/40 backdrop-blur-md border border-blueshift-gray-800/50 rounded-2xl min-h-[44px];
   }
-  
+
   .text-gradient {
     @apply bg-gradient-to-r from-blueshift-cyan via-blueshift-blue to-blueshift-cyan bg-clip-text text-transparent;
   }
-  
+
   .btn-primary {
     @apply px-5 py-2.5 bg-blueshift-cyan text-black font-semibold font-mono rounded-xl 
-           hover:shadow-lg hover:shadow-blueshift-cyan/25 transition-all duration-200 transform hover:scale-105;
+           hover:shadow-lg hover:shadow-blueshift-cyan/25 transition-all duration-200 transform hover:scale-105
+           min-h-[44px] touch-manipulation;
   }
-  
+
   .btn-secondary {
     @apply px-5 py-2.5 bg-blueshift-gray-800/80 backdrop-blur text-blueshift-gray-300 font-medium rounded-xl
-           hover:bg-blueshift-gray-700 hover:text-white transition-all duration-200 border border-blueshift-gray-700;
+           hover:bg-blueshift-gray-700 hover:text-white transition-all duration-200 border border-blueshift-gray-700
+           min-h-[44px] touch-manipulation;
   }
-  
+
   .stat-card {
     @apply p-4 rounded-xl backdrop-blur-sm border transition-all duration-200;
   }
-  
+
   .input-dark {
     @apply w-full px-4 py-2.5 bg-blueshift-gray-900/50 border border-blueshift-gray-800 rounded-xl
            text-white placeholder-blueshift-gray-500 focus:outline-none focus:ring-1 
-           focus:ring-blueshift-cyan/50 focus:border-blueshift-cyan/50 transition-all duration-200;
+           focus:ring-blueshift-cyan/50 focus:border-blueshift-cyan/50 transition-all duration-200
+           min-h-[44px];
+  }
+}
+
+@layer utilities {
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  .min-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 640px) {
+  .glass-card {
+    @apply p-3;
+  }
+
+  .btn-primary {
+    @apply text-sm;
+  }
+
+  .input-dark {
+    @apply text-base;
   }
 }
 
@@ -69,12 +105,12 @@
 }
 
 .recharts-legend-wrapper {
-  color: #CDD1DB !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  color: #cdd1db !important;
+  font-family: "JetBrains Mono", monospace !important;
 }
 
 .recharts-default-legend .recharts-legend-item {
-  color: #CDD1DB !important;
+  color: #cdd1db !important;
 }
 
 .recharts-tooltip-wrapper {
@@ -122,25 +158,25 @@
 
 /* Fix tooltip content styling */
 .recharts-tooltip-wrapper .recharts-default-tooltip {
-  background-color: #0A0B0D !important;
-  border: 1px solid #2A2B30 !important;
+  background-color: #0a0b0d !important;
+  border: 1px solid #2a2b30 !important;
   border-radius: 8px !important;
-  color: #9CA0AA !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  color: #9ca0aa !important;
+  font-family: "JetBrains Mono", monospace !important;
 }
 
 .recharts-tooltip-item {
-  color: #CDD1DB !important;
+  color: #cdd1db !important;
 }
 
 .recharts-tooltip-label {
-  color: #CDD1DB !important;
+  color: #cdd1db !important;
 }
 
 /* Remove default hover backgrounds */
 .recharts-cartesian-grid-horizontal line,
 .recharts-cartesian-grid-vertical line {
-  stroke: #2A2B30 !important;
+  stroke: #2a2b30 !important;
 }
 
 .wallet-adapter-button-trigger {
@@ -150,52 +186,52 @@
 
 /* Wallet adapter modal and dropdown styling */
 .wallet-adapter-modal {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
   @apply !bg-blueshift-gray-900/95 !backdrop-blur-md !rounded-2xl !shadow-2xl;
 }
 
 .wallet-adapter-modal-wrapper {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
   @apply !bg-blueshift-darker/60 !backdrop-blur-sm;
   border: 1px solid rgba(26, 27, 31, 0.8) !important;
 }
 
 .wallet-adapter-modal-button-close {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
   @apply !text-blueshift-gray-400 hover:!text-white !transition-colors;
 }
 
 .wallet-adapter-modal-title {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
   @apply !text-white !font-semibold !uppercase !tracking-wider;
 }
 
 .wallet-adapter-modal-list {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
 }
 
 .wallet-adapter-modal-list-more {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
 }
 
 .wallet-adapter-button {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
 }
 
 /* Wallet dropdown styling */
 .wallet-adapter-dropdown {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
   @apply !bg-blueshift-gray-900 !rounded-xl !shadow-lg !backdrop-blur-md;
 }
 
 .wallet-adapter-dropdown-list {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
   @apply !bg-transparent !p-2;
   border: 1px solid rgba(26, 27, 31, 0.8) !important;
 }
 
 .wallet-adapter-dropdown-list-item {
-  font-family: 'JetBrains Mono', monospace !important;
+  font-family: "JetBrains Mono", monospace !important;
   @apply !bg-transparent !text-blueshift-gray-300 !rounded-lg !px-3 !py-2 !text-sm !font-medium !uppercase !tracking-wider;
   transition: all 0.2s ease !important;
 }
