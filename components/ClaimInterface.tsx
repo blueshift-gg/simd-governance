@@ -8,9 +8,9 @@ import { PublicKey, Transaction } from "@solana/web3.js"
 import { getAssociatedTokenAddress, AccountLayout, TOKEN_PROGRAM_ID, createTransferInstruction, createAssociatedTokenAccountInstruction } from "@solana/spl-token"
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, RadialBarChart, RadialBar } from 'recharts'
 import { 
-  MerkleTreeData, 
-  TreeNode, 
-  findNodeForAddress, 
+  MerkleTreeData,
+  TreeNode,
+  findNodeForAddress,
   loadMerkleTree,
   calculateAmountUnlocked,
   calculateAmountLocked
@@ -29,7 +29,6 @@ import { TOKEN_MINT } from "@/lib/constants"
 export default function ClaimInterface() {
   const { publicKey, sendTransaction } = useWallet()
   const { connection } = useConnection()
-  
   const [merkleData, setMerkleData] = useState<MerkleTreeData | null>(null)
   const [userNode, setUserNode] = useState<TreeNode | null>(null)
   const [loading, setLoading] = useState(false)

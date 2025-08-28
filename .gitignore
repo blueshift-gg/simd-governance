@@ -33,6 +33,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Merkle tree files (these should be added separately for each deployment)
+# Merkle tree files (these should be added separately for each deployment) 
 /public/merkle-tree.json
-/public/*.json
