@@ -147,3 +147,68 @@
   height: auto !important;
   @apply !bg-blueshift-cyan !uppercase !text-blueshift-dark hover:!shadow-lg !font-mono !font-semibold !rounded-xl !transition-all !duration-200 hover:!scale-105;
 }
+
+/* Wallet adapter modal and dropdown styling */
+.wallet-adapter-modal {
+  font-family: 'JetBrains Mono', monospace !important;
+  @apply !bg-blueshift-gray-900/95 !backdrop-blur-md !rounded-2xl !shadow-2xl;
+}
+
+.wallet-adapter-modal-wrapper {
+  font-family: 'JetBrains Mono', monospace !important;
+  @apply !bg-blueshift-darker/60 !backdrop-blur-sm;
+  border: 1px solid rgba(26, 27, 31, 0.8) !important;
+}
+
+.wallet-adapter-modal-button-close {
+  font-family: 'JetBrains Mono', monospace !important;
+  @apply !text-blueshift-gray-400 hover:!text-white !transition-colors;
+}
+
+.wallet-adapter-modal-title {
+  font-family: 'JetBrains Mono', monospace !important;
+  @apply !text-white !font-semibold !uppercase !tracking-wider;
+}
+
+.wallet-adapter-modal-list {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.wallet-adapter-modal-list-more {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.wallet-adapter-button {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Wallet dropdown styling */
+.wallet-adapter-dropdown {
+  font-family: 'JetBrains Mono', monospace !important;
+  @apply !bg-blueshift-gray-900 !rounded-xl !shadow-lg !backdrop-blur-md;
+}
+
+.wallet-adapter-dropdown-list {
+  font-family: 'JetBrains Mono', monospace !important;
+  @apply !bg-transparent !p-2;
+  border: 1px solid rgba(26, 27, 31, 0.8) !important;
+}
+
+.wallet-adapter-dropdown-list-item {
+  font-family: 'JetBrains Mono', monospace !important;
+  @apply !bg-transparent !text-blueshift-gray-300 !rounded-lg !px-3 !py-2 !text-sm !font-medium !uppercase !tracking-wider;
+  transition: all 0.2s ease !important;
+}
+
+.wallet-adapter-dropdown-list-item:hover {
+  @apply !bg-blueshift-gray-800 !text-white;
+}
+
+.wallet-adapter-dropdown-list-item:not(:last-child) {
+  @apply !mb-1;
+}
+
+/* Hide copy address option */
+.wallet-adapter-dropdown-list-item:first-child {
+  display: none !important;
+}
