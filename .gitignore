@@ -22,7 +22,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Local env files
+# Local env f iles
 .env*.local
 .env
 
@@ -32,6 +32,3 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
-
-# Merkle tree files (these should be added separately for each deployment) 
-/public/merkle-tree.json
