@@ -3,6 +3,7 @@ import { JetBrains_Mono, Inter } from "next/font/google"
 import "./globals.css"
 import { WalletProvider } from "@/components/WalletProvider"
 import { Toaster } from "react-hot-toast"
+import Footer from "@/components/Footer"
 
 const jetbrainsMono = JetBrains_Mono({ 
   subsets: ["latin"],
@@ -14,8 +15,22 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Blueshift Governance - SIMD-0326: Alpenglow ",
-  description: "Claim your vote tokens, vote to decide on the future of Solana, keep track of the SIMD governannce process.",
+  title: "SIMD-0326: Alpenglow - Blueshift Governance Dashboard",
+  description: "Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow",
+  openGraph: {
+    type: 'website',
+    url: 'https://gov.blueshift.gg',
+    title: 'SIMD-0326: Alpenglow - Blueshift Governance Dashboard',
+    description: 'Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow',
+    images: ['/og.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: 'https://gov.blueshift.gg',
+    title: 'SIMD-0326: Alpenglow - Blueshift Governance Dashboard',
+    description: 'Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow',
+    images: ['/og.png'],
+  },
 }
 
 export default function RootLayout({
@@ -25,8 +40,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${jetbrainsMono.variable} ${inter.variable}`}>
-      <body className="font-sans min-h-screen">
-        <WalletProvider>{children}</WalletProvider>
+      <body className="font-sans min-h-screen flex flex-col">
+        <div className="flex-1">
+          <WalletProvider>{children}</WalletProvider>
+        </div>
+        <Footer />
         <Toaster 
           position="bottom-right"
           toastOptions={{

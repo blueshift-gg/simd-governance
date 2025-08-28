@@ -145,7 +145,7 @@
 
 .wallet-adapter-button-trigger {
   height: auto !important;
-  @apply !bg-blueshift-cyan !uppercase !text-blueshift-dark hover:!shadow-lg !font-mono !font-semibold !rounded-xl !transition-all !duration-200 hover:!scale-105;
+  @apply !bg-blueshift-cyan !text-blueshift-dark hover:!shadow-lg !font-mono !font-semibold !rounded-xl !transition-all !duration-200 hover:!scale-105;
 }
 
 /* Wallet adapter modal and dropdown styling */
