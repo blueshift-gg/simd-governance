@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import toast from "react-hot-toast"
 import { useWallet, useConnection } from "@solana/wallet-adapter-react"
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
+import { WalletMultiButton } from "./WalletMultiButton"
 import { PublicKey, Transaction } from "@solana/web3.js"
 import { getAssociatedTokenAddress, AccountLayout, TOKEN_PROGRAM_ID, createTransferInstruction, createAssociatedTokenAccountInstruction } from "@solana/spl-token"
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, RadialBarChart, RadialBar } from 'recharts'

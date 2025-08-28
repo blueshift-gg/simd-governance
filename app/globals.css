@@ -142,3 +142,8 @@
 .recharts-cartesian-grid-vertical line {
   stroke: #2A2B30 !important;
 }
+
+.wallet-adapter-button-trigger {
+  height: auto !important;
+  @apply !bg-blueshift-cyan !uppercase !text-blueshift-dark hover:!shadow-lg !font-mono !font-semibold !rounded-xl !transition-all !duration-200 hover:!scale-105;
+}
