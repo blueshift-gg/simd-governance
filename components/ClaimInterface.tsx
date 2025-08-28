@@ -469,7 +469,7 @@ export default function ClaimInterface() {
   const voteStatusInfo = getVoteStatus()
 
   return (
-    <div className="min-h-screen px-4 py-8">
+    <div className="min-h-screen px-4 py-8 bg-gradient-radial from-blueshift-cyan/[0.02] to-blueshift-dark">
       {/* Header */}
       <header className="max-w-7xl mx-auto mb-8">
         <div className="flex items-center justify-between mb-6">
@@ -503,14 +503,10 @@ export default function ClaimInterface() {
               rel="noopener noreferrer"
               className="flex items-center space-x-1 text-gray-400 hover:text-blueshift-cyan font-mono transition-colors"
             >
-              <svg className="w-3 h-3 fill-current" viewBox="0 0 646 646">
-                <g>
-                  <path d="M519.2 270.5c-10.2-10.2-26.8-10.2-37 0L332.4 420.3c-10.2 10.2-10.2 26.8 0 37s26.8 10.2 37 0l149.8-149.8c10.2-10.2 10.2-26.8 0-37z"/>
-                  <path d="M126.8 375.5c10.2-10.2 26.8-10.2 37 0l149.8 149.8c10.2 10.2 10.2 26.8 0 37s-26.8 10.2-37 0L126.8 412.5c-10.2-10.2-10.2-26.8 0-37z"/>
-                  <path d="M126.8 270.5c10.2-10.2 26.8-10.2 37 0l149.8 149.8c10.2 10.2 10.2 26.8 0 37s-26.8 10.2-37 0L126.8 307.5c-10.2-10.2-10.2-26.8 0-37z"/>
-                  <path d="M519.2 375.5c-10.2-10.2-26.8-10.2-37 0L332.4 525.3c-10.2 10.2-10.2 26.8 0 37s26.8 10.2 37 0l149.8-149.8c10.2-10.2 10.2-26.8 0-37z"/>
-                  <path d="M88 120h50v50H88zm420 0h50v50h-50zM88 476h50v50H88zm420 0h50v50h-50z"/>
-                </g>
+              <svg className="w-3 h-3 fill-current" x="0" y="0" version="1.1" viewBox="0 0 397.7 311.7">
+                <path d="M64.6 237.9a13 13 0 0 1 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7a13 13 0 0 1-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z"/>
+                <path d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7a13 13 0 0 1-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z"/>
+                <path d="M333.1 120.1a13 13 0 0 0-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7a13 13 0 0 0 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z"/>
               </svg>
               <span>Forum Discussion</span>
             </a>
@@ -544,7 +540,7 @@ export default function ClaimInterface() {
             <h3 className="text-sm font-semibold text-white mb-2 font-mono uppercase tracking-wider">Quorum</h3>
             <div className="mb-2 flex-1 flex items-center justify-center gap-2">
               <span className={`text-xl font-bold font-mono ${votingStatus?.quorumMet ? 'text-blueshift-cyan' : 'text-blueshift-gray-400'}`}>
-                {votingStatus?.quorumMet ? 'MET' : 'PENDING'}
+                {votingStatus?.quorumMet ? 'ACHIEVED' : 'PENDING'}
               </span>
               {votingStatus?.quorumMet && (
                 <svg className="w-5 h-5 fill-current text-blueshift-cyan" viewBox="0 0 20 20">
@@ -562,7 +558,7 @@ export default function ClaimInterface() {
             <h3 className="text-sm font-semibold text-white mb-2 font-mono uppercase tracking-wider">Supermajority</h3>
             <div className="mb-2 flex-1 flex items-center justify-center gap-2">
               <span className={`text-xl font-bold font-mono ${votingStatus?.supermajorityMet ? 'text-blueshift-cyan' : 'text-blueshift-gray-400'}`}>
-                {votingStatus?.supermajorityMet ? 'MET' : 'PENDING'}
+                {votingStatus?.supermajorityMet ? 'ACHIEVED' : 'PENDING'}
               </span>
               {votingStatus?.supermajorityMet && (
                 <svg className="w-5 h-5 fill-current text-blueshift-cyan" viewBox="0 0 20 20">
@@ -571,7 +567,7 @@ export default function ClaimInterface() {
               )}
             </div>
             <p className="text-xs text-blueshift-gray-500 font-mono">
-              {votingStatus ? `${votingStatus.yesPercentage.toFixed(1)}% voted yes` : 'Loading...'}
+              {votingStatus ? `${votingStatus.yesPercentage.toFixed(1)}% VOTED YES` : 'Loading...'}
             </p>
           </div>
 
