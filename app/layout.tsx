@@ -17,20 +17,6 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "SIMD-0326: Alpenglow - Blueshift Governance Dashboard",
   description: "Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow",
-  openGraph: {
-    type: 'website',
-    url: 'https://gov.blueshift.gg',
-    title: 'SIMD-0326: Alpenglow - Blueshift Governance Dashboard',
-    description: 'Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow',
-    images: ['/og.png'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: 'https://gov.blueshift.gg',
-    title: 'SIMD-0326: Alpenglow - Blueshift Governance Dashboard',
-    description: 'Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow',
-    images: ['/og.png'],
-  },
 }
 
 export default function RootLayout({
