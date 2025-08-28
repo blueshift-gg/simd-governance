@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-blueshift-darker text-blueshift-gray-300 antialiased;
+    background-image: 
+      radial-gradient(ellipse at top left, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(105, 162, 241, 0.05) 0%, transparent 50%);
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-blueshift-gray-900/40 backdrop-blur-md border border-blueshift-gray-800/50 rounded-2xl;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-blueshift-cyan via-blueshift-blue to-blueshift-cyan bg-clip-text text-transparent;
+  }
+  
+  .btn-primary {
+    @apply px-5 py-2.5 bg-blueshift-cyan text-black font-semibold font-mono rounded-xl 
+           hover:shadow-lg hover:shadow-blueshift-cyan/25 transition-all duration-200 transform hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply px-5 py-2.5 bg-blueshift-gray-800/80 backdrop-blur text-blueshift-gray-300 font-medium rounded-xl
+           hover:bg-blueshift-gray-700 hover:text-white transition-all duration-200 border border-blueshift-gray-700;
+  }
+  
+  .stat-card {
+    @apply p-4 rounded-xl backdrop-blur-sm border transition-all duration-200;
+  }
+  
+  .input-dark {
+    @apply w-full px-4 py-2.5 bg-blueshift-gray-900/50 border border-blueshift-gray-800 rounded-xl
+           text-white placeholder-blueshift-gray-500 focus:outline-none focus:ring-1 
+           focus:ring-blueshift-cyan/50 focus:border-blueshift-cyan/50 transition-all duration-200;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-blueshift-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-blueshift-gray-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-blueshift-gray-600;
+}
+
+/* Fix chart hover backgrounds */
+.recharts-surface {
+  background: transparent !important;
+}
+
+.recharts-legend-wrapper {
+  color: #CDD1DB !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.recharts-default-legend .recharts-legend-item {
+  color: #CDD1DB !important;
+}
+
+.recharts-tooltip-wrapper {
+  background: transparent !important;
+}
+
+.recharts-active-shape {
+  filter: brightness(1.1) !important;
+}
+
+/* Fix bar chart hover states */
+.recharts-bar-rectangle:hover {
+  fill-opacity: 1 !important;
+}
+
+.recharts-active-bar {
+  filter: none !important;
+}
+
+/* Remove all bar chart hover backgrounds */
+.recharts-bar-rectangle {
+  transition: none !important;
+}
+
+.recharts-bar:hover .recharts-bar-rectangle {
+  fill-opacity: 1 !important;
+  filter: none !important;
+}
+
+.recharts-responsive-container .recharts-bar-rectangle:hover {
+  opacity: 1 !important;
+  fill-opacity: 1 !important;
+}
+
+/* Override any default recharts hover styling */
+.recharts-bar-rectangle:hover,
+.recharts-bar-rectangle:active,
+.recharts-bar-rectangle:focus {
+  fill-opacity: 1 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+/* Fix tooltip content styling */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #0A0B0D !important;
+  border: 1px solid #2A2B30 !important;
+  border-radius: 8px !important;
+  color: #9CA0AA !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.recharts-tooltip-item {
+  color: #CDD1DB !important;
+}
+
+.recharts-tooltip-label {
+  color: #CDD1DB !important;
+}
+
+/* Remove default hover backgrounds */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #2A2B30 !important;
+}
