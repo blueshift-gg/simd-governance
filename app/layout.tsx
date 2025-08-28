@@ -17,6 +17,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "SIMD-0326: Alpenglow - Blueshift Governance Dashboard",
   description: "Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow",
+  metadataBase: new URL('https://gov.blueshift.gg'),
 }
 
 export default function RootLayout({
