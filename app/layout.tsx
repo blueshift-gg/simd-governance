@@ -19,6 +19,32 @@ export const metadata: Metadata = {
   description:
     "Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow",
   metadataBase: new URL("https://gov.blueshift.gg"),
+  openGraph: {
+    title: "SIMD-0326: Alpenglow - Blueshift Governance Dashboard",
+    description:
+      "Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow",
+    url: "https://gov.blueshift.gg",
+    siteName: "Blueshift Governance",
+    images: [
+      {
+        url: "opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "SIMD-0326: Alpenglow - Blueshift Governance Dashboard",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SIMD-0326: Alpenglow - Blueshift Governance Dashboard",
+    description:
+      "Claim your vote tokens, cast your vote and track progress on SIMD-0326: Alpenglow",
+    images: "opengraph-image.png",
+    creator: "@blueshift_gg",
+    site: "https://gov.blueshift.gg",
+  },
 };
 
 export default function RootLayout({
