@@ -41,7 +41,8 @@ import {
   formatTokenAmount as formatVoteTokens,
   VoteResults,
   UserVotingPower,
-} from "@/lib/vote-results";
+  } from "@/lib/vote-results";
+import WalletEligibilityChecker from "@/components/WalletEligibilityChecker"
 import {
   TOKEN_MINT,
   VOTE_ADDRESSES,
@@ -629,7 +630,9 @@ export default function ClaimInterface() {
           </div>
         </div>
       </header>
-
+      <div className="max-w-7xl mx-auto mb-6">
+        <WalletEligibilityChecker merkleData={merkleData} loading={loading} walletConnected={!!publicKey} />
+      </div>
       {/* Voting Status */}
       <div className="max-w-7xl mx-auto mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
