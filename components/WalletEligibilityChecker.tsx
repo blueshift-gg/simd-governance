@@ -15,9 +15,14 @@ interface EligibilityResult {
 interface WalletEligibilityCheckerProps {
   merkleData: MerkleTreeData | null
   loading: boolean
+  walletConnected: boolean
 }
 
-export default function WalletEligibilityChecker({ merkleData, loading }: WalletEligibilityCheckerProps) {
+export default function WalletEligibilityChecker({ merkleData, loading, walletConnected }: WalletEligibilityCheckerProps) {
+  if (walletConnected) {
+    return null
+  }
+
   const [walletAddress, setWalletAddress] = useState("")
   const [checking, setChecking] = useState(false)
   const [result, setResult] = useState<EligibilityResult | null>(null)
@@ -109,7 +114,7 @@ export default function WalletEligibilityChecker({ merkleData, loading }: Wallet
   return (
     <div className="glass-card p-6 mb-6">
       <h2 className="text-lg font-semibold text-white mb-4 font-mono uppercase tracking-wider">
-        Check Wallet Eligibility
+      Check Wallet Eligibility Before Connecting
       </h2>
       
       <div className="space-y-4">
@@ -120,7 +125,7 @@ export default function WalletEligibilityChecker({ merkleData, loading }: Wallet
               value={walletAddress}
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
-              placeholder="Enter wallet address to check SolGov eligibility..."
+              placeholder="Enter wallet address to check SolGov eligibility before connecting..."
               className="w-full px-4 py-3 bg-blueshift-gray-800 border border-blueshift-gray-700 rounded-lg text-white font-mono text-sm placeholder-blueshift-gray-500 focus:outline-none focus:ring-2 focus:ring-blueshift-cyan focus:border-transparent"
               disabled={checking || loading}
             />

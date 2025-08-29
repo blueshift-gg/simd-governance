@@ -515,7 +515,7 @@ export default function ClaimInterface() {
         </div>
       </header>
       <div className="max-w-7xl mx-auto mb-6">
-        <WalletEligibilityChecker merkleData={merkleData} loading={loading} />
+        <WalletEligibilityChecker merkleData={merkleData} loading={loading} walletConnected={!!publicKey} />
       </div>
       {/* Voting Status */}
       <div className="max-w-7xl mx-auto mb-6">
